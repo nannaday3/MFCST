@@ -205,8 +205,8 @@ void CgPrjDlg::OnBnClickedBtnTest()
 
 	m_pDlgImage->m_Rad = GetDlgItemInt(IDC_ED_RD);
 
-	int x = m_pDlgImage->m_Rad +(rand() % (nWidth - m_pDlgImage->m_Rad*3));
-	int y = m_pDlgImage->m_Rad +(rand() % (nHeight - m_pDlgImage->m_Rad*3));
+	int x = m_pDlgImage->m_Rad +(rand() % (nWidth - m_pDlgImage->m_Rad*2-5));
+	int y = m_pDlgImage->m_Rad +(rand() % (nHeight - m_pDlgImage->m_Rad*2-5));
 	
 	
 	m_pDlgImage->m_ptData.x = x;

@@ -13,6 +13,11 @@ public:
 
 	CWnd* m_pParent;
 	CImage m_image;
+	CImage m_yimage;
+	RGBQUAD m_Drgb;
+	RGBQUAD* m_rgb;
+
+	int m_color = 0;
 	int m_nDataCount = 0;
 	int m_Rad = 50;
 	CPoint m_ptData;
@@ -33,6 +38,8 @@ public:
 private:
 	void InitImage();
 	void drawData(CDC* pDC, int Rad);
+	
 public:
 	afx_msg void OnPaint();
+
 };

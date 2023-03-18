@@ -192,27 +192,97 @@ void CgPrjDlg::OnBnClickedBtnTest()
 	int nWidth = m_pDlgImage->m_image.GetWidth();
 	int nHeight = m_pDlgImage->m_image.GetHeight();
 	int nPitch = m_pDlgImage->m_image.GetPitch();
-	
+	int color = 0;
+
+	//m_pDlgImage->m_flag = TRUE;
+
+	//unsigned char* yfm = (unsigned char*)m_pDlgImage->m_yimage.GetBits();
+	//int nyWidth = m_pDlgImage->m_yimage.GetWidth();
+	//int nyHeight = m_pDlgImage->m_yimage.GetHeight();
+	//int nyPitch = m_pDlgImage->m_yimage.GetPitch();
 
 	memset(fm, 0xff, nWidth*nHeight);
 
-	int x = rand() % nWidth;
-	int y = rand() % nHeight;
-	fm[y * nPitch + x] = 0;
-	
+	m_pDlgImage->m_Rad = GetDlgItemInt(IDC_ED_RD);
 
+	int x = m_pDlgImage->m_Rad +(rand() % (nWidth - m_pDlgImage->m_Rad*3));
+	int y = m_pDlgImage->m_Rad +(rand() % (nHeight - m_pDlgImage->m_Rad*3));
+	
+	
 	m_pDlgImage->m_ptData.x = x;
 	m_pDlgImage->m_ptData.y = y;
 
-	m_pDlgImage->m_Rad = GetDlgItemInt(IDC_ED_RD);
+	DrawCircle(fm, x - m_pDlgImage->m_Rad, y - m_pDlgImage->m_Rad, m_pDlgImage->m_Rad, color);
+
+	color = 0xff;
+
+	DrawCircle(fm, x - m_pDlgImage->m_Rad, y - m_pDlgImage->m_Rad, m_pDlgImage->m_Rad, color);
+
+	m_pDlgImage->m_color = color;
 
 	m_pDlgImage->Invalidate();
+
+
 
 	Circenter(x, y, GetDlgItemInt(IDC_ED_RD));
 }
 using namespace std;
 void CgPrjDlg::Circenter(int x, int y, int ED)
 {
-	
 	cout << "반지름 : "<< ED << ",무게중심(" << x << "," << y << ")" << endl;
+}
+
+void CgPrjDlg::DrawCircle(unsigned char* fm, int x, int y, int nRadius, int nGray)
+{
+	int nCenterX = x + nRadius;
+	int nCenterY = y + nRadius;
+	int nPitch = m_pDlgImage->m_image.GetPitch();
+	
+
+	if (nGray == 0xff)
+	{
+		for (int j = y; j < y + nRadius * 2; j++) {
+			for (int i = x; i < x + nRadius * 2; i++)
+			{
+				if (isInCircle(i, j, nCenterX, nCenterY, nRadius-1))
+					fm[j * nPitch + i] = nGray;
+			}
+		}
+		fm[nCenterY * nPitch + nCenterX] = 0;
+		fm[(nCenterY-1) * nPitch + nCenterX] = 0;
+		fm[(nCenterY+1) * nPitch + nCenterX] = 0;
+		fm[nCenterY * nPitch + (nCenterX-1)] = 0;
+		fm[nCenterY * nPitch + (nCenterX+1)] = 0;
+		fm[(nCenterY - 2) * nPitch + nCenterX] = 0;
+		fm[(nCenterY + 2) * nPitch + nCenterX] = 0;
+		fm[nCenterY * nPitch + (nCenterX - 2)] = 0;
+		fm[nCenterY * nPitch + (nCenterX + 2)] = 0;
+	}
+	else
+	{
+		for (int j = y; j < y + nRadius * 2; j++) {
+			for (int i = x; i < x + nRadius * 2; i++)
+			{
+				if (isInCircle(i, j, nCenterX, nCenterY, nRadius))
+				{
+					fm[j * nPitch + i] = nGray;
+				}
+			}
+		}
+	}
+}
+bool CgPrjDlg::isInCircle(int i, int j, int nCenterX, int nCenterY, int nRadius)
+{
+	bool bRet = false;
+
+	double dX = i - nCenterX;
+	double dY = j - nCenterY;
+	double dDist = dX * dX + dY * dY;
+
+	if (dDist < nRadius * nRadius)
+	{
+		bRet = true;
+	}
+
+	return bRet;
 }

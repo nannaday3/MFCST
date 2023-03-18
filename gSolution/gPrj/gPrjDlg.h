@@ -41,6 +41,8 @@ public:
 
 	void callFunc(int n);
 	void Circenter(int x, int y, int ED);
+	void DrawCircle(unsigned char* fm, int i, int j, int nRadius, int nGray);
+	bool isInCircle(int i, int j, int nCenterX, int nCenterY, int nRadius);
 	afx_msg void OnBnClickedBtnTest();
 	int RAD;
 };
